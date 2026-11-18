@@ -140,24 +140,7 @@
     p.innerHTML = p.textContent.trim().split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
   });
 
-  /* ---------- cadre "meander" (soirées) ---------- */
-  function drawFrame() {
-    $$('[data-frame]').forEach(f => {
-      const svg = $('.frame__svg', f), w = f.offsetWidth, h = f.offsetHeight, s = 22, g = 7;
-      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-      // spirale carrée (raimon) dans chaque coin + doubles filets
-      const corner = (x, y, sx, sy) => {
-        const P = (a, b) => `${x + sx * a},${y + sy * b}`;
-        return `M${P(0, s + 18)} L${P(0, 0)} L${P(s, 0)} L${P(s, s)} L${P(g, s)} L${P(g, g)} L${P(s - g, g)} L${P(s - g, s - g)} M${P(s + 18, 0)} L${P(s, 0)}`;
-      };
-      let d = corner(0, 0, 1, 1) + corner(w, 0, -1, 1) + corner(0, h, 1, -1) + corner(w, h, -1, -1);
-      d += `M${s + 18},0 L${w - s - 18},0 M${s + 18},${h} L${w - s - 18},${h} M0,${s + 18} L0,${h - s - 18} M${w},${s + 18} L${w},${h - s - 18}`;
-      d += `M${s + 18},${g} L${w - s - 18},${g} M${s + 18},${h - g} L${w - s - 18},${h - g} M${g},${s + 18} L${g},${h - s - 18} M${w - g},${s + 18} L${w - g},${h - s - 18}`;
-      svg.innerHTML = `<path d="${d}" pathLength="1"/>`;
-    });
-  }
-  drawFrame();
-  addEventListener('resize', () => { drawFrame(); });
+
 
   /* ---------- sans animation ---------- */
   const noren = $('.noren');
@@ -254,17 +237,14 @@
   gsap.to('[data-spin] svg', { rotate: 220, ease: 'none', scrollTrigger: { trigger: '.mani__pics', start: 'top bottom', end: 'bottom top', scrub: true } });
 
   /* cave : vagues (seigaiha) qui montent comme le plafond */
-  gsap.fromTo('[data-waves]', { y: 40 }, { y: -12, ease: 'none', scrollTrigger: { trigger: '.cave', start: 'top bottom', end: 'top 20%', scrub: true } });
-  gsap.fromTo('.cave__waves', { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power3.inOut', scrollTrigger: { trigger: '.cave', start: 'top 88%' } });
+  gsap.fromTo('[data-waves]', { yPercent: 18 }, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '.cave', start: 'top bottom', end: 'top 20%', scrub: true } });
+  gsap.from('[data-waves] g', { scale: 0, transformOrigin: '50% 100%', duration: .7, ease: 'back.out(1.8)', stagger: { each: .012, from: 'random' }, scrollTrigger: { trigger: '.cave', start: 'top 85%' } });
 
-  /* soirées : le cadre se trace */
-  ScrollTrigger.create({
-    trigger: '[data-frame]', start: 'top 82%', once: true,
-    onEnter: () => {
-      const p = $('[data-frame] .frame__svg path');
-      if (p) gsap.fromTo(p, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' });
-    }
-  });
+  /* soirées : le cadre se dessine (coins qui tournent, filets qui s'étirent depuis le centre) */
+  gsap.timeline({ scrollTrigger: { trigger: '[data-frame]', start: 'top 82%' } })
+    .from('.frame__e--t, .frame__e--b', { scaleX: 0, duration: 1, ease: 'power3.inOut' })
+    .from('.frame__e--l, .frame__e--r', { scaleY: 0, duration: 1, ease: 'power3.inOut' }, '<.1')
+    .from('.frame__c svg', { autoAlpha: 0, scale: .2, rotate: 90, duration: .8, ease: 'back.out(1.6)', stagger: .07 }, '<.35');
 
   /* la bande : les photos s'éventaillent */
   const deck = $('[data-deck]');
