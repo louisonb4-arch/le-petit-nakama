@@ -218,7 +218,7 @@ svg use{fill-rule:evenodd}
 .fuda__info p{grid-column:1/-1;margin:2px 0 0;font-size:14.5px;color:var(--muted)}
 .fuda__count{font-family:var(--display);font-size:26px;color:var(--shu);white-space:nowrap}
 .fuda__hint{display:flex;justify-content:center;margin:0 0 10px}
-.fuda__hint span{display:inline-flex;align-items:center;gap:8px;padding:11px 16px 11px 12px;border-radius:999px;background:var(--shu);color:#fff;font-size:clamp(12px,3.5vw,14.5px);white-space:nowrap;font-weight:650;letter-spacing:.005em;box-shadow:0 8px 20px rgba(224,74,47,.28)}
+.fuda__hint>span{display:inline-flex;align-items:center;gap:8px;padding:11px 16px 11px 12px;border-radius:999px;background:var(--shu);color:#fff;font-size:clamp(12px,3.5vw,14.5px);white-space:nowrap;font-weight:650;letter-spacing:.005em;box-shadow:0 8px 20px rgba(224,74,47,.28)}
 .fuda__hint svg{width:22px;height:22px;flex:none;transform-origin:60% 90%}
 .fuda.is-tease .fuda__hint svg{animation:fuda-tap 2.6s var(--ease) infinite}
 @keyframes fuda-tap{0%,55%,100%{transform:none}65%{transform:translateY(3px) scale(.88)}75%{transform:none}}
@@ -334,6 +334,173 @@ svg use{fill-rule:evenodd}
   .btn{padding:0 18px}
   .facts{gap:6px}.fact{padding:12px 9px}.fact b{font-size:29px}
 }
+picture{display:contents}
+.top__nav,.hint-d{display:none}
+/* =====================================================================
+   VERSION ORDINATEUR (≥ 1024 px) — rien ici ne s'applique au mobile
+   ===================================================================== */
+@media (min-width:1024px){
+  :root{--pad:max(56px,calc((100vw - 1240px) / 2));--w:100vw;--r:26px}
+  body{background:var(--washi)}
+  body::before{display:none}
+  .site{max-width:none}
+
+  /* typo */
+  .h{font-size:clamp(72px,6.2vw,94px)}
+  .label{font-size:13px}
+  .label .jp{font-size:17px}
+  .p{font-size:17px;line-height:1.6;max-width:46ch}
+  .btn{height:56px;padding:0 28px;font-size:15.5px}
+  .btn--wine:hover{background:var(--wine-2)}
+  .btn--shu:hover{background:#c93c23}
+  .btn--line:hover{background:var(--wine);color:var(--washi);box-shadow:inset 0 0 0 1.5px var(--wine)}
+  .btn--cream:hover{background:#fff}
+
+  /* en-tête : navigation visible, pas de burger ni de dock */
+  .top{padding:20px var(--pad)}
+  .top__logo{width:86px}
+  .top__nav{display:flex;align-items:center;gap:30px;margin-right:24px}
+  .top__nav a{position:relative;padding:6px 0;font-size:14.5px;font-weight:600;color:var(--wine)}
+  .top__nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--shu);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease)}
+  .top__nav a:hover::after{transform:scaleX(1)}
+  .top__cta{height:46px;padding:0 22px;font-size:14.5px}
+  .burger,.menu,.dock{display:none}
+
+  /* intro noren : plus de largeur, même geste */
+  .noren__word{width:min(30vw,380px)}
+  .noren__mon{width:78px;height:78px;font-size:30px}
+  .noren__side{font-size:30px}
+
+  /* héros : texte à gauche, l'illustration et son soleil à droite */
+  .hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-rows:auto auto 1fr auto;column-gap:4vw;min-height:100vh;min-height:100svh;padding:132px var(--pad) 64px}
+  .hero__kicker{grid-column:1;grid-row:1;justify-content:flex-start;font-size:13px}
+  .hero__kicker .jp{font-size:18px}
+  .hero__word{grid-column:1;grid-row:2;width:min(28vw,400px,44vh);margin:30px 0 0}
+  .hero__stage{grid-column:2;grid-row:1/5;align-self:end;padding:0}
+  .hero__stage::after{left:-4%;right:-4%}
+  .hero__illu{width:min(100%,82vh);margin:0 auto;left:1%}
+  .hero__sun{width:min(122%,118vh)}
+  .hero__foot{grid-column:1;grid-row:4;align-self:end;padding:0;margin:0}
+  .hero__where{flex-direction:column;align-items:flex-start;gap:16px;font-size:15px}
+  .hero__where b{font-size:42px}
+  .hero__ctas{grid-template-columns:auto auto;justify-content:start;gap:12px;margin-top:26px}
+
+  /* manifeste : texte à gauche, photos à droite */
+  .mani{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto 1fr;column-gap:6vw;padding:160px var(--pad) 140px}
+  .mani>.wrap{grid-column:1;grid-row:1;padding:0}
+  .mani__text{font-size:clamp(23px,1.9vw,29px);line-height:1.4;max-width:30ch}
+  .mani__pics{grid-column:2;grid-row:1/3;margin:0;height:auto;max-height:none;aspect-ratio:1/1.28}
+  .mani__stamp{width:132px;height:132px}
+  .facts{grid-column:1;grid-row:2;align-self:end;margin:56px 0 0;gap:12px;max-width:560px}
+  .fact{padding:20px 18px}
+  .fact b{font-size:46px}
+  .fact span{font-size:13.5px}
+
+  /* midi / soir : interrupteur centré, deux colonnes dans chaque ambiance */
+  .duo{padding-top:120px}
+  .duo__switch{top:120px;width:260px;height:58px}
+  .duo__switch button{font-size:15.5px}
+  .duo__pill{height:48px}
+  .duo__layer{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:6vw;align-items:center;padding:170px var(--pad) 150px}
+  .duo__layer .wrap{padding:0}
+  .duo__pics{margin:0;gap:18px}
+  .duo__pics .ph:last-child{margin-bottom:-56px}
+  .chips{gap:10px}
+  .chip{font-size:14px;padding:9px 15px}
+
+  /* la carte : titre et classiques à gauche, étiquettes à droite */
+  .carte{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,7fr);grid-template-rows:auto 1fr;column-gap:min(5vw,72px);padding:140px var(--pad) 150px}
+  .carte>.wrap{grid-column:1;grid-row:1;padding:0}
+  .carte .h{font-size:clamp(66px,5.6vw,84px)}
+  .fuda{grid-column:2;grid-row:1/3;margin:0;align-self:start}
+  .fuda__row{height:clamp(480px,66vh,660px);gap:8px}
+  .fuda__strip{cursor:pointer}
+  .fuda__strip:not(.is-on):hover .fuda__paper{transform:translateY(-8%)}
+  .fuda__jp{font-size:20px}
+  .fuda__info{margin-top:18px}
+  .fuda__info h3{font-size:48px}
+  .fuda__info p{font-size:16px}
+  .fuda__count{font-size:30px}
+  .hint-m{display:none}.hint-d{display:inline}
+  .classics{grid-column:1;grid-row:2;align-self:start;margin:44px 0 0;padding:32px 30px 28px}
+  .classics h3{font-size:46px}
+  .classics li b{font-size:30px}
+
+  /* la cave : vagues pleine largeur, texte + boissons à gauche, grande photo à droite */
+  .cave{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:6vw;padding:0 var(--pad) 150px}
+  .cave__waves{grid-column:1/-1;margin:0 calc(-1 * var(--pad));height:210px}
+  .cave__waves svg{left:0;width:100%;height:280px}
+  .cave__head{grid-column:1;grid-row:2;padding:96px 0 0}
+  .cave__big{grid-column:2;grid-row:2/4;margin:96px 0 0;aspect-ratio:4/5}
+  .bev{grid-column:1;grid-row:3;align-self:start;margin:44px 0 0;gap:12px}
+  .bev article{padding:22px 24px;grid-template-columns:58px 1fr;gap:18px}
+  .bev .k{width:58px;height:58px;font-size:24px}
+  .bev h3{font-size:36px}
+  .bev p{font-size:15.5px}
+  .cave__duo{grid-column:1/-1;grid-row:4;margin:80px 0 0;gap:24px}
+  .cave__duo .ph{aspect-ratio:4/3}
+  .cave__duo .ph:last-child{margin-top:96px}
+  .cave__duo figcaption{font-size:13px;left:16px;bottom:16px}
+
+  /* soirées : photo à gauche, texte et règles à droite */
+  .night{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);grid-template-rows:auto 1fr;column-gap:6vw;padding:150px var(--pad) 140px}
+  .night>.wrap{grid-column:2;grid-row:1;padding:0}
+  .night__pic{grid-column:1;grid-row:1/3;margin:0;align-self:start}
+  .frame{grid-column:2;grid-row:2;align-self:start;margin:48px 0 0;padding:44px 40px 36px}
+  .frame h3{font-size:40px}
+  .frame li{font-size:16px}
+
+  /* la bande : texte à gauche, les trois photos côte à côte */
+  .bande{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:5vw;align-items:center;padding:120px var(--pad) 90px}
+  .bande>.wrap{padding:0}
+  .bande__deck{margin:0;height:auto;aspect-ratio:1/.64}
+  .bande__deck .ph--team{left:21%;right:auto;width:58%}
+  .bande__deck .ph--c1,.bande__deck .ph--c2{width:19%}
+  .bande__deck .ph--c1{left:0}
+  .bande__deck .ph--c2{right:0}
+
+  /* avis : la note à gauche, deux citations à droite */
+  .avis{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:5vw;align-items:center;padding:90px var(--pad) 150px}
+  .score{padding:0;flex-direction:column;align-items:flex-start;gap:10px}
+  .score b{font-size:210px}
+  .quotes{margin:0;grid-template-columns:1fr 1fr;gap:18px}
+  .quote{padding:30px 30px 26px}
+  .quote p{font-size:40px;padding-right:44px}
+
+  /* infos : trois cartes côte à côte */
+  .infos{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);grid-template-rows:auto auto auto 1fr;gap:20px 24px;padding:140px var(--pad) 100px;border-radius:56px 56px 0 0}
+  .infos>.wrap{grid-column:1/-1;padding:0;margin-bottom:26px}
+  .infos .card,.infos .card:first-of-type{margin:0}
+  .infos>.card:nth-child(2){grid-column:1;grid-row:2}
+  .infos>.card:nth-child(3){grid-column:2;grid-row:2/5}
+  .infos>.card:nth-child(4){grid-column:1;grid-row:3}
+  .infos__cta{grid-column:1;grid-row:4;margin:0;align-self:start}
+  .small{grid-column:1/-1;grid-row:5;margin:10px 0 0;font-size:14px}
+  .card{padding:30px 32px}
+  .card .big{font-size:44px}
+  .hours li{padding:13px 0;font-size:16px}
+
+  /* pied de page */
+  .foot{padding:90px var(--pad) 64px}
+  .foot__logo{width:380px}
+  .foot__base{width:520px}
+  .foot nav{gap:8px 30px;font-size:15px}
+  .foot nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+}
+
+/* écrans d'ordinateur peu hauts (portables 13") : accueil compacté */
+@media (min-width:1024px) and (max-height:820px){
+  .hero{padding-top:104px;padding-bottom:44px}
+  .hero__word{width:min(28vw,400px,37vh);margin-top:22px}
+  .hero__where{gap:10px}
+  .hero__where b{font-size:36px}
+  .hero__ctas{margin-top:18px}
+}
+/* très grands écrans : on laisse respirer sans étirer */
+@media (min-width:1600px){
+  .hero__word{width:min(26vw,440px,46vh)}
+}
+
 /* ---------- reveal defaults (JS) ---------- */
 .js [data-rv]{opacity:0}
 .js .ph[data-clip]{opacity:0}
@@ -375,6 +542,7 @@ svg use{fill-rule:evenodd}
 <header class="top" id="top">
   <a class="top__logo" href="#accueil" aria-label="Le Petit Nakama, accueil"><svg viewBox="0 0 214 245"><use href="#sym-word"/></svg></a>
   <div class="top__right">
+    <nav class="top__nav" aria-label="Sections"><a href="#maison">La maison</a><a href="#midi-soir">Midi & soir</a><a href="#carte">La carte</a><a href="#cave">La cave</a><a href="#soirees">Soirées</a><a href="#infos">Infos</a></nav>
     <a class="btn btn--line top__cta" href="https://foodcollect.fr/store/Le-petit-nakama/reserver" target="_blank" rel="noopener">Réserver</a>
     <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><i></i></button>
   </div>
@@ -434,8 +602,8 @@ svg use{fill-rule:evenodd}
     <p class="mani__text" data-words>Un izakaya, c'est le bistrot du coin à la japonaise : on y passe pour un verre, on reste pour les petites assiettes. Le nôtre a posé ses tabourets place François II, sur l'île de Nantes, avec une cuisine japonaise qui fait la part belle aux produits d'ici, des vins nature, des sakés et des bières qui ont du caractère.</p>
   </div>
   <div class="mani__pics">
-    <figure class="ph ph--a" data-clip style="margin:0"><img src="img/salle.webp" width="600" height="600" alt="La salle du Petit Nakama : tables en bois, coussins bleus et orange, suspensions et ardoises" loading="lazy" decoding="async" data-par></figure>
-    <figure class="ph ph--b" data-clip style="margin:0"><img src="img/bar.webp" width="420" height="420" alt="Le comptoir en bois, les ardoises et le plafond peint en vagues rouges" loading="lazy" decoding="async" data-par></figure>
+    <figure class="ph ph--a" data-clip style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/salle.webp"><img src="img/salle.webp" width="600" height="600" alt="La salle du Petit Nakama : tables en bois, coussins bleus et orange, suspensions et ardoises" loading="lazy" decoding="async" data-par></picture></figure>
+    <figure class="ph ph--b" data-clip style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/bar.webp"><img src="img/bar.webp" width="420" height="420" alt="Le comptoir en bois, les ardoises et le plafond peint en vagues rouges" loading="lazy" decoding="async" data-par></picture></figure>
     <div class="mani__stamp" aria-hidden="true" data-spin>
       <svg viewBox="0 0 100 100"><defs><path id="circ" d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs><circle cx="50" cy="50" r="49" fill="#F4ECDF"/><text><textPath href="#circ">Île de Nantes · Izakaya · Vins nature · </textPath></text><text class="k" x="50" y="59" text-anchor="middle">仲間</text></svg>
     </div>
@@ -463,8 +631,8 @@ svg use{fill-rule:evenodd}
         <div class="chips" data-rv><span class="chip">Sur place</span><span class="chip">À emporter</span><span class="chip">Version végé</span><span class="chip">Titres-resto</span></div>
       </div>
       <div class="duo__pics">
-        <figure class="ph" style="margin:0" data-clip><img src="img/donburi.webp" width="480" height="480" alt="Bol de riz garni, betterave en fines tranches et cébette" loading="lazy" decoding="async" data-par></figure>
-        <figure class="ph" style="margin:0" data-clip><img src="img/riz.webp" width="480" height="480" alt="Riz, jaune d'œuf confit et cébette fraîche" loading="lazy" decoding="async" data-par></figure>
+        <figure class="ph" style="margin:0" data-clip><picture><source media="(min-width:1024px)" srcset="img/d/donburi.webp"><img src="img/donburi.webp" width="480" height="480" alt="Bol de riz garni, betterave en fines tranches et cébette" loading="lazy" decoding="async" data-par></picture></figure>
+        <figure class="ph" style="margin:0" data-clip><picture><source media="(min-width:1024px)" srcset="img/d/riz.webp"><img src="img/riz.webp" width="480" height="480" alt="Riz, jaune d'œuf confit et cébette fraîche" loading="lazy" decoding="async" data-par></picture></figure>
       </div>
     </div>
     <div class="duo__layer duo__layer--soir" aria-hidden="true">
@@ -475,8 +643,8 @@ svg use{fill-rule:evenodd}
         <div class="chips"><span class="chip">Petites assiettes</span><span class="chip">Vins nature</span><span class="chip">DJ sets</span><span class="chip">Jusqu'à 1h jeu. & ven.</span></div>
       </div>
       <div class="duo__pics">
-        <figure class="ph" style="margin:0"><img src="img/trinque.webp" width="480" height="569" alt="Des amis trinquent à la bière au comptoir du Petit Nakama" loading="lazy" decoding="async"></figure>
-        <figure class="ph" style="margin:0"><img src="img/kirin.webp" width="480" height="600" alt="Néon Kirin Ichiban sur le mur en bois, un verre de vin posé sur une caisse" loading="lazy" decoding="async"></figure>
+        <figure class="ph" style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/trinque.webp"><img src="img/trinque.webp" width="480" height="569" alt="Des amis trinquent à la bière au comptoir du Petit Nakama" loading="lazy" decoding="async"></picture></figure>
+        <figure class="ph" style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/kirin.webp"><img src="img/kirin.webp" width="480" height="600" alt="Néon Kirin Ichiban sur le mur en bois, un verre de vin posé sur une caisse" loading="lazy" decoding="async"></picture></figure>
       </div>
     </div>
   </div>
@@ -489,14 +657,14 @@ svg use{fill-rule:evenodd}
     <h2 class="h" data-lines><span class="ln"><span>Petites assiettes,</span></span><span class="ln"><span><em>grandes envies.</em></span></span></h2>
   </div>
   <div class="fuda is-tease" data-fuda>
-    <div class="fuda__hint"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6M13 10a2 2 0 0 1 4 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2-3a1.5 1.5 0 0 1 2.5-1.6L7 14V9a2 2 0 0 1 2-2"/></svg>Touchez une étiquette pour voir la photo</span></div>
+    <div class="fuda__hint"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6M13 10a2 2 0 0 1 4 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2-3a1.5 1.5 0 0 1 2.5-1.6L7 14V9a2 2 0 0 1 2-2"/></svg><span class="hint-m">Touchez une étiquette pour voir la photo</span><span class="hint-d">Survolez une étiquette pour voir le plat</span></span></div>
     <div class="fuda__hang"><div class="fuda__rail" aria-hidden="true"></div>
     <div class="fuda__row" role="group" aria-label="Plats en photo">
-<button type="button" class="fuda__strip is-on" aria-pressed="true" data-name="Okonomiyaki" data-desc="La galette d'Osaka, sauce, mayo et bonite séchée qui danse." aria-label="Okonomiyaki"><img src="img/okonomi.webp" width="680" height="680" alt="Galette façon okonomiyaki, mayonnaise et bonite séchée, en terrasse" loading="lazy" decoding="async"><span class="fuda__tag" aria-hidden="true">お好み焼き</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">お好み焼き</span><span class="fuda__num">一</span></span></button>
-<button type="button" class="fuda__strip" aria-pressed="false" data-name="Onigiri" data-desc="Le riz pressé à la main, sa feuille de nori bien croustillante." aria-label="Onigiri"><img src="img/onigiri.webp" width="680" height="850" alt="Onigiri dans sa feuille de nori, sur une assiette en grès" loading="lazy" decoding="async"><span class="fuda__tag" aria-hidden="true">おにぎり</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">おにぎり</span><span class="fuda__num">二</span></span></button>
-<button type="button" class="fuda__strip" aria-pressed="false" data-name="L'assiette du soir" data-desc="Pièce saisie, pak choï grillé, purée de saison. Ça change souvent." aria-label="L'assiette du soir"><img src="img/assiette.webp" width="680" height="680" alt="Assiette dressée : viande saisie, pak choï grillé, purée orangée" loading="lazy" decoding="async"><span class="fuda__tag" aria-hidden="true">一皿</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">一皿</span><span class="fuda__num">三</span></span></button>
-<button type="button" class="fuda__strip" aria-pressed="false" data-name="Riz crémeux" data-desc="Fondant, umami, et un verre de nature juste à côté." aria-label="Riz crémeux"><img src="img/vins.webp" width="680" height="739" alt="Riz crémeux, un verre de rouge et un verre de blanc sur une table en bois" loading="lazy" decoding="async"><span class="fuda__tag" aria-hidden="true">ご飯</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">ご飯</span><span class="fuda__num">四</span></span></button>
-<button type="button" class="fuda__strip" aria-pressed="false" data-name="Dressé minute" data-desc="En cuisine, tout part au dernier moment, à la pince." aria-label="Dressé minute"><img src="img/dressage.webp" width="680" height="850" alt="Le chef dresse des bols en cuisine" loading="lazy" decoding="async"><span class="fuda__tag" aria-hidden="true">盛付</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">盛付</span><span class="fuda__num">五</span></span></button>
+<button type="button" class="fuda__strip is-on" aria-pressed="true" data-name="Okonomiyaki" data-desc="La galette d'Osaka, sauce, mayo et bonite séchée qui danse." aria-label="Okonomiyaki"><picture><source media="(min-width:1024px)" srcset="img/d/okonomi.webp"><img src="img/okonomi.webp" width="680" height="680" alt="Galette façon okonomiyaki, mayonnaise et bonite séchée, en terrasse" loading="lazy" decoding="async"></picture><span class="fuda__tag" aria-hidden="true">お好み焼き</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">お好み焼き</span><span class="fuda__num">一</span></span></button>
+<button type="button" class="fuda__strip" aria-pressed="false" data-name="Onigiri" data-desc="Le riz pressé à la main, sa feuille de nori bien croustillante." aria-label="Onigiri"><picture><source media="(min-width:1024px)" srcset="img/d/onigiri.webp"><img src="img/onigiri.webp" width="680" height="850" alt="Onigiri dans sa feuille de nori, sur une assiette en grès" loading="lazy" decoding="async"></picture><span class="fuda__tag" aria-hidden="true">おにぎり</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">おにぎり</span><span class="fuda__num">二</span></span></button>
+<button type="button" class="fuda__strip" aria-pressed="false" data-name="L'assiette du soir" data-desc="Pièce saisie, pak choï grillé, purée de saison. Ça change souvent." aria-label="L'assiette du soir"><picture><source media="(min-width:1024px)" srcset="img/d/assiette.webp"><img src="img/assiette.webp" width="680" height="680" alt="Assiette dressée : viande saisie, pak choï grillé, purée orangée" loading="lazy" decoding="async"></picture><span class="fuda__tag" aria-hidden="true">一皿</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">一皿</span><span class="fuda__num">三</span></span></button>
+<button type="button" class="fuda__strip" aria-pressed="false" data-name="Riz crémeux" data-desc="Fondant, umami, et un verre de nature juste à côté." aria-label="Riz crémeux"><picture><source media="(min-width:1024px)" srcset="img/d/vins.webp"><img src="img/vins.webp" width="680" height="739" alt="Riz crémeux, un verre de rouge et un verre de blanc sur une table en bois" loading="lazy" decoding="async"></picture><span class="fuda__tag" aria-hidden="true">ご飯</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">ご飯</span><span class="fuda__num">四</span></span></button>
+<button type="button" class="fuda__strip" aria-pressed="false" data-name="Dressé minute" data-desc="En cuisine, tout part au dernier moment, à la pince." aria-label="Dressé minute"><picture><source media="(min-width:1024px)" srcset="img/d/dressage.webp"><img src="img/dressage.webp" width="680" height="850" alt="Le chef dresse des bols en cuisine" loading="lazy" decoding="async"></picture><span class="fuda__tag" aria-hidden="true">盛付</span><span class="fuda__paper" aria-hidden="true"><span class="fuda__hanko">品</span><span class="fuda__jp">盛付</span><span class="fuda__num">五</span></span></button>
     </div>
     </div>
     <div class="fuda__info" aria-live="polite"><h3 data-fuda-name>Okonomiyaki</h3><span class="fuda__count" data-fuda-count>一 / 五</span><p data-fuda-desc>La galette d'Osaka, sauce, mayo et bonite séchée qui danse.</p></div>
@@ -524,15 +692,15 @@ svg use{fill-rule:evenodd}
     <span class="label" data-rv><span class="jp">酒</span>La cave</span>
     <h2 class="h" data-lines><span class="ln"><span>Du nature,</span></span><span class="ln"><span>du saké, et de la</span></span><span class="ln"><span><em>bière qui pétille.</em></span></span></h2>
   </div>
-  <figure class="ph cave__big" data-clip style="margin-bottom:0"><img src="img/ardoise.webp" width="700" height="875" alt="L'ardoise des bières et des vins au verre sous le plafond peint de vagues rouges" loading="lazy" decoding="async" data-par></figure>
+  <figure class="ph cave__big" data-clip style="margin-bottom:0"><picture><source media="(min-width:1024px)" srcset="img/d/ardoise.webp"><img src="img/ardoise.webp" width="700" height="875" alt="L'ardoise des bières et des vins au verre sous le plafond peint de vagues rouges" loading="lazy" decoding="async" data-par></picture></figure>
   <div class="bev">
     <article data-rv><span class="k">葡</span><div><h3>Vins nature</h3><p>Des vignerons qui travaillent sans artifice, et quelques pépites venues de Perpignan.</p></div></article>
     <article data-rv><span class="k">酒</span><div><h3>Sakés</h3><p>Une sélection pour accompagner les petites assiettes, et sortir des sentiers battus.</p></div></article>
     <article data-rv><span class="k">麦</span><div><h3>Bières</h3><p>La Kirin, des brasseries nantaises et des craft bien choisies.</p></div></article>
   </div>
   <div class="cave__duo">
-    <figure class="ph" style="margin:0" data-clip><img src="img/cave-graff.webp" width="440" height="440" alt="Vitrine de bières craft et le logo Le Petit Nakama tagué au mur" loading="lazy" decoding="async" data-par></figure>
-    <figure class="ph" style="margin:0" data-clip><img src="img/cave.webp" width="440" height="440" alt="Le bar : étagères de bouteilles, tabourets en cuir et borne d'arcade" loading="lazy" decoding="async" data-par><figcaption>Oui, il y a une borne d'arcade.</figcaption></figure>
+    <figure class="ph" style="margin:0" data-clip><picture><source media="(min-width:1024px)" srcset="img/d/cave-graff.webp"><img src="img/cave-graff.webp" width="440" height="440" alt="Vitrine de bières craft et le logo Le Petit Nakama tagué au mur" loading="lazy" decoding="async" data-par></picture></figure>
+    <figure class="ph" style="margin:0" data-clip><picture><source media="(min-width:1024px)" srcset="img/d/cave.webp"><img src="img/cave.webp" width="440" height="440" alt="Le bar : étagères de bouteilles, tabourets en cuir et borne d'arcade" loading="lazy" decoding="async" data-par></picture><figcaption>Oui, il y a une borne d'arcade.</figcaption></figure>
   </div>
 </section>
 
@@ -543,7 +711,7 @@ svg use{fill-rule:evenodd}
     <h2 class="h" data-lines><span class="ln"><span>DJ sets, stand-up</span></span><span class="ln"><span>et soirées qui</span></span><span class="ln"><span><em>finissent tard.</em></span></span></h2>
     <p class="p" data-rv>Le Petit Nakama, c'est aussi un bar où il se passe des choses : DJ sets, scène stand-up, Halloween, fresques peintes en direct… Le programme tombe sur Instagram.</p>
   </div>
-  <figure class="ph night__pic" data-clip style="margin-bottom:0"><img src="img/fresque.webp" width="690" height="690" alt="Une artiste peint une fresque colorée sur le mur du bar" loading="lazy" decoding="async" data-par></figure>
+  <figure class="ph night__pic" data-clip style="margin-bottom:0"><picture><source media="(min-width:1024px)" srcset="img/d/fresque.webp"><img src="img/fresque.webp" width="690" height="690" alt="Une artiste peint une fresque colorée sur le mur du bar" loading="lazy" decoding="async" data-par></picture></figure>
   <div class="frame" data-frame>
     <span class="frame__c frame__c--tl" aria-hidden="true"><svg viewBox="-1.1 -1.1 40 40"><path d="M0 40V0H22V22H7V7H15V15M40 0H22"/></svg></span><span class="frame__c frame__c--tr" aria-hidden="true"><svg viewBox="-1.1 -1.1 40 40"><path d="M0 40V0H22V22H7V7H15V15M40 0H22"/></svg></span><span class="frame__c frame__c--bl" aria-hidden="true"><svg viewBox="-1.1 -1.1 40 40"><path d="M0 40V0H22V22H7V7H15V15M40 0H22"/></svg></span><span class="frame__c frame__c--br" aria-hidden="true"><svg viewBox="-1.1 -1.1 40 40"><path d="M0 40V0H22V22H7V7H15V15M40 0H22"/></svg></span><span class="frame__e frame__e--t" aria-hidden="true"></span><span class="frame__e frame__e--b" aria-hidden="true"></span><span class="frame__e frame__e--l" aria-hidden="true"></span><span class="frame__e frame__e--r" aria-hidden="true"></span>
     <h3>Les règles de la maison</h3>
@@ -564,9 +732,9 @@ svg use{fill-rule:evenodd}
     <p class="p" data-rv>En salle comme en cuisine, une équipe qui aime le Japon, le vin vivant et les tablées qui débordent. Venez seul, à deux ou à douze : ici, tout le monde finit nakama.</p>
   </div>
   <div class="bande__deck" data-deck>
-    <figure class="ph ph--team" style="margin:0"><img src="img/bande.webp" width="700" height="700" alt="L'équipe du Petit Nakama devant la façade, une rangée de bouteilles de vin à leurs pieds" loading="lazy" decoding="async"></figure>
-    <figure class="ph ph--c1" style="margin:0"><img src="img/chef.webp" width="300" height="533" alt="Le chef inspecte un poisson entier" loading="lazy" decoding="async"></figure>
-    <figure class="ph ph--c2" style="margin:0"><img src="img/sourire.webp" width="300" height="533" alt="Pendant les travaux du bar, un membre de l'équipe pose avec un vieux lampadaire" loading="lazy" decoding="async"></figure>
+    <figure class="ph ph--team" style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/bande.webp"><img src="img/bande.webp" width="700" height="700" alt="L'équipe du Petit Nakama devant la façade, une rangée de bouteilles de vin à leurs pieds" loading="lazy" decoding="async"></picture></figure>
+    <figure class="ph ph--c1" style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/chef.webp"><img src="img/chef.webp" width="300" height="533" alt="Le chef inspecte un poisson entier" loading="lazy" decoding="async"></picture></figure>
+    <figure class="ph ph--c2" style="margin:0"><picture><source media="(min-width:1024px)" srcset="img/d/sourire.webp"><img src="img/sourire.webp" width="300" height="533" alt="Pendant les travaux du bar, un membre de l'équipe pose avec un vieux lampadaire" loading="lazy" decoding="async"></picture></figure>
   </div>
 </section>
 
@@ -635,6 +803,6 @@ svg use{fill-rule:evenodd}
 
 <script defer src="js/gsap.min.js"></script>
 <script defer src="js/ScrollTrigger.min.js"></script>
-<script defer src="js/main.js?v=4"></script>
+<script defer src="js/main.js?v=5"></script>
 </body>
 </html>

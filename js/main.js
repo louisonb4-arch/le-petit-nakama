@@ -110,6 +110,10 @@
       }, { threshold: .5 }).observe($('.fuda__row', fuda));
     }
     strips.forEach((s, k) => s.addEventListener('click', () => { stopTease(); show(k); }));
+    // à la souris (ordinateur) : l'étiquette survolée se soulève toute seule
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      strips.forEach((s, k) => s.addEventListener('mouseenter', () => { stopTease(); show(k); }));
+    }
     // glisser du doigt pour passer à l'étiquette voisine
     let x0 = null, y0 = null;
     const row = $('.fuda__row', fuda);
