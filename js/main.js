@@ -47,7 +47,8 @@
     if (y < lastY - 2) top.classList.remove('is-hidden');
     lastY = y;
   }
-  addEventListener('scroll', onScroll, { passive: true });
+  let ticking = false;
+  addEventListener('scroll', () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; onScroll(); dockUpd(); }); }, { passive: true });
   function setMenu(open) {
     menu.classList.toggle('is-open', open);
     top.classList.toggle('is-menu', open);
@@ -124,10 +125,10 @@
   const infos = $('#infos');
   function dockUpd() {
     const y = scrollY, h = innerHeight;
+    if (y < h * 0.9) { dock.classList.remove('is-on'); return; }
     const ir = infos.getBoundingClientRect();
     dock.classList.toggle('is-on', y > h * 0.9 && ir.top > h * 0.6);
   }
-  addEventListener('scroll', dockUpd, { passive: true });
 
   /* ---------- texte : mots ---------- */
   $$('[data-words]').forEach(p => {
@@ -178,9 +179,10 @@
     .add(() => { startDrops(); top.classList.add('is-ready'); });
 
   // gouttes de saké qui perlent du goulot
+  const drops = [];
   function startDrops() {
     $$('.hero__illu .drop').forEach((d, i) => {
-      gsap.timeline({ repeat: -1, repeatDelay: 2.4, delay: 1 + i * .18 })
+      drops[i] = gsap.timeline({ repeat: -1, repeatDelay: 2.4, delay: 1 + i * .18 })
         .to(d, { x: -14 - i * 6, y: 10 + i * 8, autoAlpha: 0, scale: .6, duration: .9, ease: 'power1.in', transformOrigin: '50% 50%' })
         .set(d, { x: 0, y: 0, scale: .3 })
         .to(d, { autoAlpha: 1, scale: 1, duration: .5, ease: 'back.out(3)' });
@@ -193,7 +195,7 @@
     try { seen = !!sessionStorage.getItem('nk-noren'); sessionStorage.setItem('nk-noren', '1'); } catch (e) {}
     if (/[?&]intro/.test(location.search)) seen = false;
     const panels = $$('.noren__panel');
-    const done = () => { noren.remove(); document.body.classList.remove('is-intro'); ScrollTrigger.refresh(); };
+    const done = () => { noren.remove(); document.body.classList.remove('is-intro'); setupScroll(); };
     const tl = gsap.timeline({ onComplete: done });
 
     if (!seen) {
@@ -206,7 +208,7 @@
         .to('.noren__mon', { autoAlpha: 1, duration: .6 }, '<.2')
         .to('.noren__side', { autoAlpha: 1, duration: .6 }, '<.1')
         .to('.noren__hello', { autoAlpha: 1, duration: .6 }, '<')
-        .addLabel('exit', '+=.45');
+        .addLabel('exit', '+=.3');
     } else {
       tl.addLabel('exit', .15);
     }
@@ -219,8 +221,9 @@
 
     noren.addEventListener('click', () => { if (tl.currentLabel() !== 'exit' && tl.time() < tl.labels.exit) tl.seek('exit'); else tl.timeScale(2.5); }, { once: false });
   }
-  if (noren) intro(); else heroTl.play();
+  if (noren) intro(); else { heroTl.play(); setupScroll(); }
 
+  function setupScroll() {
   /* ---------- scroll : hero ---------- */
   gsap.to('.hero__illu svg', { yPercent: -10, rotate: -4, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   gsap.to('.hero__sun', { yPercent: 18, scale: 1.08, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -248,8 +251,8 @@
   gsap.to('[data-spin] svg', { rotate: 220, ease: 'none', scrollTrigger: { trigger: '.mani__pics', start: 'top bottom', end: 'bottom top', scrub: true } });
 
   /* cave : vagues (seigaiha) qui montent comme le plafond */
-  gsap.fromTo('[data-waves]', { yPercent: 18 }, { yPercent: -6, ease: 'none', scrollTrigger: { trigger: '.cave', start: 'top bottom', end: 'top 20%', scrub: true } });
-  gsap.from('[data-waves] g', { scale: 0, transformOrigin: '50% 100%', duration: .7, ease: 'back.out(1.8)', stagger: { each: .012, from: 'random' }, scrollTrigger: { trigger: '.cave', start: 'top 85%' } });
+  gsap.fromTo('[data-waves]', { y: 40 }, { y: -12, ease: 'none', scrollTrigger: { trigger: '.cave', start: 'top bottom', end: 'top 20%', scrub: true } });
+  gsap.fromTo('.cave__waves', { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: 1.2, ease: 'power3.inOut', scrollTrigger: { trigger: '.cave', start: 'top 88%' } });
 
   /* soirées : le cadre se trace */
   ScrollTrigger.create({
@@ -280,5 +283,9 @@
   gsap.from('.fuda__rail', { scaleX: 0, duration: 1, ease: 'power3.inOut', scrollTrigger: { trigger: '[data-fuda]', start: 'top 85%' } });
   gsap.from('.fuda__strip', { yPercent: -16, autoAlpha: 0, rotate: i => [-5, 4, -3, 5, -4][i % 5], transformOrigin: '50% 0%', duration: 1.6, ease: 'elastic.out(1,.4)', stagger: .09, delay: .2, scrollTrigger: { trigger: '[data-fuda]', start: 'top 85%' } });
 
+  // les gouttes ne tournent que si le héros est à l'écran
+  ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom top', onToggle: st => drops.forEach(t => t && (st.isActive ? t.resume() : t.pause())) });
+    ScrollTrigger.refresh();
+  }
   addEventListener('load', () => ScrollTrigger.refresh());
 })();
