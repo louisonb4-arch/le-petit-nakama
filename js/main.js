@@ -40,11 +40,14 @@
   /* ---------- header + menu ---------- */
   const top = $('#top'), menu = $('#menu'), burger = $('.burger');
   let lastY = 0;
+  let solid = false, hidden = false;
   function onScroll() {
     const y = scrollY;
-    top.classList.toggle('is-solid', y > 40);
-    if (!top.classList.contains('is-menu')) top.classList.toggle('is-hidden', y > 400 && y > lastY + 2);
-    if (y < lastY - 2) top.classList.remove('is-hidden');
+    if ((y > 40) !== solid) { solid = y > 40; top.classList.toggle('is-solid', solid); }
+    let h = hidden;
+    if (!menu.classList.contains('is-open') && y > 400 && y > lastY + 2) h = true;
+    if (y < lastY - 2 || y <= 400) h = false;
+    if (h !== hidden) { hidden = h; top.classList.toggle('is-hidden', h); }
     lastY = y;
   }
   let ticking = false;
@@ -123,11 +126,13 @@
   /* ---------- dock ---------- */
   const dock = $('[data-dock]');
   const infos = $('#infos');
+  // positions mises en cache : aucune lecture de mise en page pendant le scroll
+  let infosTop = 0, vh = innerHeight, dockOn = false;
+  const measure = () => { vh = innerHeight; infosTop = infos.getBoundingClientRect().top + scrollY; };
+  measure(); addEventListener('resize', measure); addEventListener('load', measure);
   function dockUpd() {
-    const y = scrollY, h = innerHeight;
-    if (y < h * 0.9) { dock.classList.remove('is-on'); return; }
-    const ir = infos.getBoundingClientRect();
-    dock.classList.toggle('is-on', y > h * 0.9 && ir.top > h * 0.6);
+    const y = scrollY, on = y > vh * 0.9 && infosTop - y > vh * 0.6;
+    if (on !== dockOn) { dockOn = on; dock.classList.toggle('is-on', on); }
   }
 
   /* ---------- texte : mots ---------- */
@@ -160,7 +165,7 @@
     noren && noren.remove();
     document.body.classList.remove('is-intro');
     $$('[data-rv]').forEach(e => e.style.opacity = 1);
-    $$('.ph[data-clip]').forEach(e => e.style.clipPath = 'none');
+    $$('.ph[data-clip]').forEach(e => e.style.opacity = 1);
     $$('.mani__text .w').forEach(e => e.style.opacity = 1);
     return;
   }
@@ -192,7 +197,7 @@
   /* ---------- INTRO : le noren ---------- */
   function intro() {
     let seen = false;
-    try { seen = !!sessionStorage.getItem('nk-noren'); sessionStorage.setItem('nk-noren', '1'); } catch (e) {}
+    try { const t = +localStorage.getItem('nk-noren') || 0; seen = Date.now() - t < 12 * 3600e3; localStorage.setItem('nk-noren', Date.now()); } catch (e) {}
     if (/[?&]intro/.test(location.search)) seen = false;
     const panels = $$('.noren__panel');
     const done = () => { noren.remove(); document.body.classList.remove('is-intro'); setupScroll(); };
@@ -201,14 +206,12 @@
     if (!seen) {
       gsap.set('.noren__word', { autoAlpha: 0, y: 26 });
       gsap.set('.noren__mon, .noren__side, .noren__hello', { autoAlpha: 0 });
-      tl.from('.noren__rod', { yPercent: -400, duration: .6, ease: 'power3.out' })
-        .from('.noren__panels', { yPercent: -102, duration: 1, ease: 'power4.out' }, '<.15')
-        .fromTo(panels, { rotate: i => [-3, 2, -2.5][i] }, { rotate: 0, duration: 1.6, ease: 'elastic.out(1,.32)', transformOrigin: '50% 0%' }, '<.45')
-        .to('.noren__word', { autoAlpha: 1, y: 0, duration: .8, ease: 'power3.out' }, '<.05')
-        .to('.noren__mon', { autoAlpha: 1, duration: .6 }, '<.2')
-        .to('.noren__side', { autoAlpha: 1, duration: .6 }, '<.1')
-        .to('.noren__hello', { autoAlpha: 1, duration: .6 }, '<')
-        .addLabel('exit', '+=.3');
+      tl.from('.noren__rod', { yPercent: -400, duration: .45, ease: 'power3.out' })
+        .from('.noren__panels', { yPercent: -102, duration: .8, ease: 'power4.out' }, '<.1')
+        .fromTo(panels, { rotate: i => [-3, 2, -2.5][i] }, { rotate: 0, duration: 1.2, ease: 'elastic.out(1,.32)', transformOrigin: '50% 0%' }, '<.3')
+        .to('.noren__word', { autoAlpha: 1, y: 0, duration: .6, ease: 'power3.out' }, '<.05')
+        .to('.noren__mon, .noren__side, .noren__hello', { autoAlpha: 1, duration: .45 }, '<.15')
+        .addLabel('exit', '-=.35');
     } else {
       tl.addLabel('exit', .15);
     }
@@ -219,7 +222,9 @@
       .to('.noren__rod', { yPercent: -400, duration: .5, ease: 'power2.in' }, '>-.35')
       .add(() => heroTl.play(), 'exit+=.55');
 
-    noren.addEventListener('click', () => { if (tl.currentLabel() !== 'exit' && tl.time() < tl.labels.exit) tl.seek('exit'); else tl.timeScale(2.5); }, { once: false });
+    // au premier geste (toucher, molette, clavier), on entre tout de suite
+    const skip = () => { if (tl.time() < tl.labels.exit) tl.seek('exit'); tl.timeScale(2.2); };
+    ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev => addEventListener(ev, skip, { once: true, passive: true }));
   }
   if (noren) intro(); else { heroTl.play(); setupScroll(); }
 
@@ -238,15 +243,13 @@
   });
   $$('.ph[data-clip]').forEach(ph => {
     const img = $('img', ph);
-    gsap.to(ph, { clipPath: 'inset(0% 0 0 0 round 22px)', duration: 1.25, ease: 'power4.inOut', scrollTrigger: { trigger: ph, start: 'top 88%' } });
-    gsap.fromTo(img, { scale: 1.3 }, { scale: 1, duration: 1.6, ease: 'power3.out', scrollTrigger: { trigger: ph, start: 'top 88%' } });
-  });
-  $$('[data-par]').forEach(img => {
-    gsap.fromTo(img, { yPercent: -5 }, { yPercent: 5, ease: 'none', scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.timeline({ scrollTrigger: { trigger: ph, start: 'top 90%' }, onComplete: () => { gsap.set([ph, img], { clearProps: 'transform,willChange' }); ph.style.opacity = 1; } })
+      .fromTo(ph, { y: 60, autoAlpha: 0, willChange: 'transform,opacity' }, { y: 0, autoAlpha: 1, duration: 1, ease: 'power3.out' })
+      .fromTo(img, { scale: 1.18, willChange: 'transform' }, { scale: 1, duration: 1.3, ease: 'power3.out' }, 0);
   });
 
   /* manifeste : les mots s'encrent au scroll */
-  gsap.to('.mani__text .w', { opacity: 1, stagger: .5, ease: 'none', scrollTrigger: { trigger: '.mani__text', start: 'top 80%', end: 'bottom 45%', scrub: .6 } });
+  gsap.to('.mani__text .w', { opacity: 1, duration: .5, stagger: .025, ease: 'power1.out', scrollTrigger: { trigger: '.mani__text', start: 'top 78%' } });
   gsap.fromTo('.mani__pics .ph--b', { rotate: 6, yPercent: 14 }, { rotate: -3, yPercent: -6, ease: 'none', scrollTrigger: { trigger: '.mani__pics', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.to('[data-spin] svg', { rotate: 220, ease: 'none', scrollTrigger: { trigger: '.mani__pics', start: 'top bottom', end: 'bottom top', scrub: true } });
 
@@ -285,7 +288,7 @@
 
   // les gouttes ne tournent que si le héros est à l'écran
   ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom top', onToggle: st => drops.forEach(t => t && (st.isActive ? t.resume() : t.pause())) });
-    ScrollTrigger.refresh();
+    ScrollTrigger.refresh(); measure();
   }
   addEventListener('load', () => ScrollTrigger.refresh());
 })();
